@@ -1,0 +1,43 @@
+
+Number_of_hardware: 3
+
+Service:
+  - service_id: test_service
+    microservices:
+      service1: 1
+      service2: 1
+      service3: 1
+
+    hardware_map: 
+      service1: 
+        1: 0
+      service2:
+        1: 1
+      service3:
+        1: 2
+
+    #A->B->Cの順で構成される簡単なくえり
+    query:
+      - query_name: query1
+        start_nodes:
+          - service1
+        number_of_service: 3
+        nodes: 
+          service1:
+            cpu_pressure: 10
+            memory_pressure: 10
+            remain_time: 3
+            next_nodes:
+              - service2
+          service2:
+            cpu_pressure: 20
+            memory_pressure: 20
+            remain_time: 3
+            next_nodes:
+              - service3
+          service3:
+            cpu_pressure: 10
+            memory_pressure: 10
+            remain_time: 3
+            next_nodes:
+              - 
