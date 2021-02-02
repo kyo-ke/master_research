@@ -1,8 +1,8 @@
 # Microservice Simulator
 
-Simulator for application which follow microservice principle.
-user can define hardware states and any mapping of microservice. 
-User Can
+Simulator for application which follow microservice principle.  
+user can define hardware states and any mapping of microservice.   
+User Can get start time and end time of each query.  
 
 
 # DEMO
@@ -38,8 +38,11 @@ python demo.py
 ```
 
 # Note
-coming soon
-
+"Environment" has many "Hardware".  
+each "Microservice" is running on "Hardware".  
+"Query" is made by "Query\_Generator".  
+when query come to a microservice, the microservice make "Job".  
+"Job" communicates each other using "Message".  
 # Author
 
 作成情報を列挙する
