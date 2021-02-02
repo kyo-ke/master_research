@@ -1,27 +1,27 @@
-# Name（リポジトリ/プロジェクト/OSSなどの名前）
+# Microservice Simulator
 
-分かりやすくてカッコイイ名前をつける（今回は"hoge"という名前をつける）
+Simulator for application which follow microservice principle.
+user can define hardware states and any mapping of microservice. 
+User Can
 
-"hoge"が何かを簡潔に紹介する
 
 # DEMO
 
-"hoge"の魅力が直感的に伝えわるデモ動画や図解を載せる
+coming soon
+image or video for explaining this simulator
 
 # Features
 
-"hoge"のセールスポイントや差別化などを説明する
+coming soon
+salse points and differentiation
 
 # Requirement
 
-"hoge"を動かすのに必要なライブラリなどを列挙する
-
-* huga 3.5.2
-* hogehuga 1.0.2
+coming soon
 
 # Installation
 
-Requirementで列挙したライブラリなどのインストール方法を説明する
+coming soon
 
 ```bash
 pip install huga_package
@@ -29,7 +29,7 @@ pip install huga_package
 
 # Usage
 
-DEMOの実行方法など、"hoge"の基本的な使い方を説明する
+coming soon
 
 ```bash
 git clone https://github.com/hoge/~
@@ -38,22 +38,18 @@ python demo.py
 ```
 
 # Note
-
-注意点などがあれば書く
+coming soon
 
 # Author
 
 作成情報を列挙する
 
-* 作成者
-* 所属
-* E-mail
+* kyosuke kariya
+* University of tokyo
+* karikyou8@gmail.com
 
 # License
-ライセンスを明示する
 
-"hoge" is under [MIT license](https://en.wikipedia.org/wiki/MIT_License).
+"Microservice Simulator" is under [MIT license](https://en.wikipedia.org/wiki/MIT_License).
 
-社内向けなら社外秘であることを明示してる
 
-"hoge" is Confidential.
