@@ -1,0 +1,48 @@
+
+Number_of_hardware: 3
+
+Service:
+    #マイクロサービスのレプリカ数とハードウェアマッピング
+  - service_id: test_service
+    microservices:
+      service1: 1
+      service2: 1
+      service3: 1
+
+    hardware_map: 
+      service1: 
+        1: 0
+      service2:
+        1: 1
+      service3:
+        1: 2
+
+    #A->B->Cの順で構成される簡単なくえり
+    query:
+      - query_name: query1
+        start_nodes:
+          - job1
+        jobs: 
+          job1:
+            microservice: service1
+            jobname: job1
+            cpu_pressure: 10
+            memory_pressure: 10
+            remain_time: 3
+            next_nodes:
+              - job2
+          job2:
+            microservice: service2
+            jobname: job3
+            cpu_pressure: 20
+            memory_pressure: 20
+            remain_time: 3
+            next_nodes:
+              - job3
+          job3:
+            microservice: service3
+            jobname: job3
+            cpu_pressure: 10
+            memory_pressure: 10
+            remain_time: 3
+            next_nodes:
