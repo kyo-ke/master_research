@@ -17,32 +17,46 @@ Service:
       service3:
         1: 2
 
+    jobs_of_service:
+        service1:
+            - job1
+        service2:
+            - job2
+        service3:
+            - job3
     #A->B->Cの順で構成される簡単なくえり
+    #job1の情報が基本になる予定
     query:
       - query_name: query1
         start_nodes:
           - job1
-        jobs: 
-          job1:
-            microservice: service1
-            jobname: job1
-            cpu_pressure: 10
-            memory_pressure: 10
-            remain_time: 3
-            next_nodes:
-              - job2
-          job2:
-            microservice: service2
-            jobname: job3
-            cpu_pressure: 20
-            memory_pressure: 20
-            remain_time: 3
-            next_nodes:
-              - job3
-          job3:
-            microservice: service3
-            jobname: job3
-            cpu_pressure: 10
-            memory_pressure: 10
-            remain_time: 3
-            next_nodes:
+        number_of_job: 3
+    jobs: 
+      job1:
+        microservice: service1
+        jobname: job1
+        cpu_pressure: 10
+        memory_pressure: 10
+        remain_time: 3
+        next_jobs:
+            - servicename: service2
+              jobname: job2
+              relation: until
+      job2:
+        microservice: service2
+        jobname: job2
+        cpu_pressure: 20
+        memory_pressure: 20
+        remain_time: 3
+        next_jobs:
+            - servicename: service3
+              jobname: job3
+              relation: until
+      job3:
+        microservice: service3
+        jobname: job3
+        cpu_pressure: 10
+        memory_pressure: 10
+        remain_time: 3
+        next_jobs:
+            - 
