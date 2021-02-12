@@ -10,7 +10,7 @@ class Job:
         # remaining time for this job
         self.remain_time = job_dict["remain_time"]
         self.jobname = job_dict["jobname"]
-        self.next_jobs = = job_dict["next_jobs"]
+        self.next_jobs = job_dict["next_jobs"]
         # ここにid持たせる意味あるかはわからん
         self.job_id = job_id
         #self.microservice = microservice
@@ -35,7 +35,7 @@ class Job:
         pass
 
 
-class Message(self):
+class Message:
     def __init__(self, message_type, to_hardware, from_hardware, from_microservice, relation=None, to_microservice=None, to_job_type=None, to_job_id=None, from_job_type=None, from_job_id=None):
         self.type = message_type  # 1: generate job, 2: count finished children
         self.to_hardware = to_hardware  # name of hardware(string)

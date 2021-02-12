@@ -1,13 +1,12 @@
-from source.service import Microservice
-from source.hardware import Hardware
-from source.environment import Environment
+from source.job import Message
 from queue import Queue
 import yaml
 import random
 
 
 class Orchestrator:
-    def __init__(self, environment: Environment):
+    def __init__(self, environment):
+        #store Message here
         self.message_queue = Queue()
         self.environment = environment
         self.microservice2hardware = dict()  # str -> str dict
@@ -22,7 +21,7 @@ class Orchestrator:
                 best_hardware = h
         return best_hardware
 
-    def haerdware_score(self, hardware_name: str) -> float:
+    def hardware_score(self, hardware_name: str) -> float:
         # evaluation logic is implemented here
         return 1.0
 
@@ -31,7 +30,14 @@ class Orchestrator:
         return self.microservice2hardware[microservice]
 
     def send_message(self, message: Message):
-        pass
+        service_name = message.to_microservice
+        hardware_name = self.choose_replica(service_name)
+        hardware = self.environment.get_hardware(hardware_name)
+        #これがいるのかは不明
+        Message.to_hardware = hardware_name
+        #send message
+        hardware.recieve_message(message)
+
 
     def serve_message(self):
         while(not self.message_queue.empty()):
