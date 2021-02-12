@@ -17,9 +17,9 @@ class Microservice:
         self.hardware = hardware
         self.next_id = 0
 
-    def make_job(self, job_type):
+    def make_job(self, job_type, parent_info):
         current_id = self.generate_id()
-        j = Job(self.job_dict[job_type], current_id)
+        j = Job(self, parent_info, self.job_dict[job_type], current_id)
         # add new job to dict and deque
         #dict for running or wating jobs
         self.run_job_dict[current_id] = j

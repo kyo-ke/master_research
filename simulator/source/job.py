@@ -2,8 +2,12 @@ from queue import Queue
 
 
 class Job:
-    def __init__(self, job_dict, job_id):
-        # cpu pressure for this job
+    def __init__(self, microservice, parent_info, job_dict, job_id):
+        self.microservice = microservice
+        self.parent_hardware = parent_info["parent_hardware"]#str
+        self.parent_microservice = parent_info["parent_microservice"]#str
+        self.parent_job_id = parent_info["parent_job_id"]
+        # cpu pressure for this job　これいらん
         self.cpu_pressure = job_dict["cpu_pressure"]
         # memory pressure of this job
         self.memory_pressure = job_dict["memory_pressure"]
@@ -25,8 +29,20 @@ class Job:
             self.send_message()
             return deltatime - self.remain_time
 
-    def send_message(self):
+    def generate_message(self):
         pass
+
+    def send_message(self):
+        #make message
+        message = Message()
+        #send message to orchestrator
+        #this work should done by kernel or service orchestrator
+        hardware = self.microservice.hardware
+        environment = hardware.environment
+        orchestrator = environment.orchestrator
+        orchestrator.recieve_message(message)
+
+
 
     def count(self):
         pass

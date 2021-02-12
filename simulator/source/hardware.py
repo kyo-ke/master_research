@@ -5,7 +5,8 @@ from queue import Queue
 
 
 class Hardware:
-    def __init__(self, number_of_core: int):
+    def __init__(self, environment, number_of_core: int):
+        self.environment = environment
         self.microservice_dict = dict()
         self.cpu_pressure = 0
         self.memory_pressure = 0
@@ -27,7 +28,11 @@ class Hardware:
     def execute_message(self, message: Message):
         if(message.type == 1):
             m_service = self.microservice_dict[message.to_microservice]
-            m_service.make_job(message.to_job_type)
+            parent_info = dict()
+            parent_info["parent_hardware"] = message.from_hardware
+            parent_info["parent_microservice"] = message.from_microservice
+            parent_info["parent_job_id"] = message.from_job_id
+            m_service.make_job(message.to_job_type, parent_info)
         elif(message.type == 2):
             m_service = self.microservice_dict[message.to_microservice]
             j = m_service.run_job_dict[message.to_job_id]

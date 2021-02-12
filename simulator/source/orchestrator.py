@@ -29,7 +29,11 @@ class Orchestrator:
     def get_hardware(self, microservice: str) -> list:
         return self.microservice2hardware[microservice]
 
+    def recieve_message(self, message: Message):
+        self.message_queue.put(message)
+
     def send_message(self, message: Message):
+        #get hardware
         service_name = message.to_microservice
         hardware_name = self.choose_replica(service_name)
         hardware = self.environment.get_hardware(hardware_name)
@@ -42,6 +46,8 @@ class Orchestrator:
     def serve_message(self):
         while(not self.message_queue.empty()):
             message = self.message_queue.get()
-            to_hardware_name = self.choose_replica(message.to_microservice)
-            message.set_target(to_hardware_name)
+            if(message.to_hardware_name is None):
+                to_hardware_name = self.choose_replica(message.to_microservice)
+                message.set_target(to_hardware_name)
             send_message(message)
+
