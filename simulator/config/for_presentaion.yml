@@ -1,8 +1,16 @@
 
 Number_of_hardware: 3
+#clock freaquencyi, memory capacity will be added here
+Hardwares: 
+    hardware1: 
+        number_of_core: 4
+    hardware2:
+        number_of_core: 4
+    hardware3:
+        number_of_core: 4 
 
 Service:
-    #マイクロサービスのレプリカ数とハードウェアマッピング
+    #mapping of microservices
   - service_id: test_service
     microservices:
       service1: 1
@@ -35,10 +43,7 @@ Service:
       job1:
         microservice: service1
         jobname: job1
-        cpu_pressure: 10
-        memory_pressure: 10
-        remain_time: 3
-        number_of_next_jobs: 1
+        cpu_time: 10
         next_jobs:
             - servicename: service2
               jobname: job2
@@ -49,7 +54,6 @@ Service:
         cpu_pressure: 20
         memory_pressure: 20
         remain_time: 3
-        number_of_next_jobs: 1
         next_jobs:
             - servicename: service3
               jobname: job3
@@ -60,6 +64,5 @@ Service:
         cpu_pressure: 10
         memory_pressure: 10
         remain_time: 3
-        number_of_next_jobs: 0
         next_jobs:
             - 

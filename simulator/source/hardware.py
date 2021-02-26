@@ -5,13 +5,21 @@ from queue import Queue
 
 
 class Hardware:
-    def __init__(self, environment, number_of_core: int):
+    def __init__(self, environment, hardware_id, number_of_core: int):
+        self.hardware_id = hardware_id
+        #koredokodetukatteru??
         self.environment = environment
         self.microservice_dict = dict()
         self.cpu_pressure = 0
         self.memory_pressure = 0
         self.number_of_core = number_of_core
         self.message_recieved = Queue()
+
+    def get_env(self):
+        return self.environment
+
+    def get_id(self):
+        return self.hardware_id
 
     def deploy(self, microservice: Microservice, name: str):
         self.microservice_dict[name] = microservice
