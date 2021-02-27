@@ -4,8 +4,8 @@ from queue import Queue
 class Message:
     def __init__(self,
                  message_type,
-                 to_hardware,
                  to_microservice,
+                 to_hardware = None,
                  to_job_type=None,
                  to_job_id=None,
                  from_hardware=None,
@@ -34,10 +34,6 @@ class Job:
         self.parent_hardware = parent_info["parent_hardware"]  # str
         self.parent_microservice = parent_info["parent_microservice"]  # str
         self.parent_job_id = parent_info["parent_job_id"]
-        # cpu pressure for this job　これいらん
-        self.cpu_pressure = job_dict["cpu_pressure"]
-        # memory pressure of this job
-        self.memory_pressure = job_dict["memory_pressure"]
         # remaining time for this job
         self.remain_time = job_dict["remain_time"]
         self.jobname = job_dict["jobname"]
@@ -54,11 +50,15 @@ class Job:
             self.remain_time -= deltatime
             return 0
         else:
-            self.send_message()
-            return deltatime - self.remain_time
+            message_list = self.generate_message(1)
+            remain_time_ = self.remain_time
+            self.remain_time = 0#may be there is no need to set zero to this parameter
+            for message in message_list:
+                self.send_message(message)
+            return deltatime - remain_time_
 
     def get_hardware_id(self):
-        return self.microservice.get_hardware().get_id()
+        return self.microservice.get_hardware_id()
 
     def get_microservice_id(self):
         return self.microservice.get_id()
@@ -76,9 +76,9 @@ class Job:
         # when job start wating
         elif flag == 1:
             message_list = list()
-            for j in self.next_jobs.values():
+            for j in self.next_jobs:
                 message = Message(message_type=1,
-                                  to_microservcie = j["servicename"],
+                                  to_microservice = j["servicename"],
                                   to_job_type =j["jobname"],
                                   from_hardware = self.get_hardware_id(),
                                   from_microservice = self.get_microservice_id(),
@@ -89,7 +89,7 @@ class Job:
     def send_message(self, message: Message):
         # send message to orchestrator
         # this work should done by kernel or service orchestrator
-        hardware = self.microservice.hardware
+        hardware = self.microservice.get_hardware()
         environment = hardware.get_env()
         orchestrator = environment.orchestrator
         orchestrator.recieve_message(message)

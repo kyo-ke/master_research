@@ -1,3 +1,5 @@
+import sys
+import os
 class test:
     TEST = 1
     def __init__(self):
@@ -5,4 +7,4 @@ class test:
 
 
 if __name__ == "__main__":
-    t = test()
+    print(os.getcwd())

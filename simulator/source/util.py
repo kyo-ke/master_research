@@ -11,6 +11,6 @@ class Util:
         data = yaml.load(f)
         return data["Number_of_hardware"], data["Service"]
 
-    # parse data["Service"]
+    # parse values in data["Service"]
     def parse_service(data: dict):
         return data["service_id"], data["microservices"], data["hardware_map"], data["jobs_of_service"], data["query"], data["jobs"]

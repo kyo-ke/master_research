@@ -1,4 +1,4 @@
-from source.microservice import Microservice
+from source.service import Service, Microservice
 from source.hardware import Hardware
 from source.orchestrator import Orchestrator
 from source.util import Util

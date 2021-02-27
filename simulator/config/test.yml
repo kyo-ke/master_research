@@ -35,9 +35,7 @@ Service:
       job1:
         microservice: service1
         jobname: job1
-        cpu_pressure: 10
-        memory_pressure: 10
-        remain_time: 3
+        remain_time: 10
         number_of_next_jobs: 1
         next_jobs:
             - servicename: service2
@@ -46,9 +44,7 @@ Service:
       job2:
         microservice: service2
         jobname: job2
-        cpu_pressure: 20
-        memory_pressure: 20
-        remain_time: 3
+        remain_time: 5
         number_of_next_jobs: 1
         next_jobs:
             - servicename: service3
@@ -57,9 +53,7 @@ Service:
       job3:
         microservice: service3
         jobname: job3
-        cpu_pressure: 10
-        memory_pressure: 10
-        remain_time: 3
+        remain_time: 15
         number_of_next_jobs: 0
         next_jobs:
             - 

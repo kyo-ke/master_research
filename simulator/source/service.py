@@ -24,7 +24,6 @@ class Microservice:
     def make_job(self, job_type, parent_info):
         current_id = self.generate_id()
         j = Job(self, parent_info, self.job_dict[job_type], current_id)
-
         # add new job to dict and deque
         #dict for running or wating jobs
         self.run_job_dict[current_id] = j
@@ -37,6 +36,12 @@ class Microservice:
 
     def get_id(self):
         return self.microservice_id
+
+    def get_hardware(self):
+        return self.hardware
+
+    def get_hardware_id(self):
+        return self.hardware.get_id()
 
     def end_jobs(self):
         num = len(self.wait_job_deque)
