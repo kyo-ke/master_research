@@ -46,6 +46,9 @@ class Environment:
         for h in eslf.hardware_dict.values():
             h.run(Environment.DELTATIME)
 
+    def get_orchestrator(self):
+        return self.orchestrator
+
     def get_hardware(self, hardware_name: str) -> Hardware:
         return self.hardware_dict[hardware_name]
 

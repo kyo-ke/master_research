@@ -91,22 +91,22 @@ class Job:
         # this work should done by kernel or service orchestrator
         hardware = self.microservice.get_hardware()
         environment = hardware.get_env()
-        orchestrator = environment.orchestrator
+        orchestrator = environment.get_orchestrator()
         orchestrator.recieve_message(message)
 
-    def count(self):
+    def count_up(self):
         self.count+=1
 
     def isend(self):
         return self.count >= self.number_of_next_jobs
 
     def end(self):
-        message = self.generate_message(1)
+        message = self.generate_message(2)
         self.send_message(message)
 
 
     def wait(self):
-        message_list = self.generate_message(2)
+        message_list = self.generate_message(1)
         for message in message_list:
             self.send_message(message)
 

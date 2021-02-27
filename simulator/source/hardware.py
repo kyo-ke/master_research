@@ -44,7 +44,7 @@ class Hardware:
         elif(message.type == 2):
             m_service = self.microservice_dict[message.to_microservice]
             j = m_service.run_job_dict[message.to_job_id]
-            j.count()
+            j.count_up()
         else:
             pass
 

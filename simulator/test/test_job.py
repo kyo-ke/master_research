@@ -35,7 +35,6 @@ class TestJob(unittest.TestCase):
 
     def test_run(self):
         job = Job(self.microservice, self.parent_info, self.job_dict, self.job_id)
-        print(job.remain_time)
         self.assertEqual(job.remain_time, 10)
         self.assertEqual(job.run(5), 0)
         self.assertEqual(job.remain_time, 5)
@@ -62,6 +61,47 @@ class TestJob(unittest.TestCase):
         message = message_list[0]
         self.assertEqual(message.to_microservice, self.job_dict["next_jobs"][0]["servicename"])
         self.assertEqual(message.to_job_type, self.job_dict["next_jobs"][0]["jobname"])
+
+    def test_send_message(self):
+        job = Job(self.microservice, self.parent_info, self.job_dict, self.job_id)
+        message = job.generate_message(2)
+        job.send_message(message)
+        env = job.microservice.get_hardware().get_env()
+        orchestrator = env.get_orchestrator()
+        self.assertEqual(orchestrator.number_of_message(), 1)
+        job.send_message(message)
+        self.assertEqual(orchestrator.number_of_message(), 2)
+
+    def test_count_up(self):
+        job = Job(self.microservice, self.parent_info, self.job_dict, self.job_id)
+        self.assertEqual(job.count, 0)
+        job.count_up()
+        self.assertEqual(job.count, 1)
+        job.count_up()
+        self.assertEqual(job.count, 2)
+
+    def test_isend(self):
+        job = Job(self.microservice, self.parent_info, self.job_dict, self.job_id)
+        for i in range(job.number_of_next_jobs):
+            self.assertFalse(job.isend())
+            job.count_up()
+        self.assertTrue(job.isend())
+
+    def test_end(self):
+        job = Job(self.microservice, self.parent_info, self.job_dict, self.job_id)
+        job.end()
+        env = job.microservice.get_hardware().get_env()
+        orchestrator = env.get_orchestrator()
+        self.assertEqual(orchestrator.number_of_message(), 1)
+
+
+    def test_wait(self):
+        job = Job(self.microservice, self.parent_info, self.job_dict, self.job_id)
+        job.wait()
+        env = job.microservice.get_hardware().get_env()
+        orchestrator = env.get_orchestrator()
+        self.assertEqual(orchestrator.number_of_message(), job.number_of_next_jobs)
+
 
 
 if __name__ == "__main__":

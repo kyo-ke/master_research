@@ -42,7 +42,6 @@ class Orchestrator:
         #send message
         hardware.recieve_message(message)
 
-
     def serve_message(self):
         while(not self.message_queue.empty()):
             message = self.message_queue.get()
@@ -51,3 +50,6 @@ class Orchestrator:
                 message.set_target(to_hardware_name)
             send_message(message)
 
+    #using this function for testing
+    def number_of_message(self):
+        return self.message_queue.qsize()
