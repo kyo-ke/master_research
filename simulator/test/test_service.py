@@ -33,6 +33,11 @@ class TestMicroservice(unittest.TestCase):
         self.assertEqual(len(microservice.job_deque), 1)
         self.assertEqual(len(microservice.run_job_dict), 1)
 
+    def test_generate_id(self):
+        microservice = Microservice(self.hardware, self.microservice_id, self.job_list, self.job_dict)
+        self.assertEqual(microservice.next_id, 0)
+        self.assertEqual(microservice.generate_id(),1)
+        self.assertEqual(microservice.generate_id(),2)
 
 if __name__ == "__main__":
     unittest.main()
