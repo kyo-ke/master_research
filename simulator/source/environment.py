@@ -1,6 +1,7 @@
+from source.microservice import Microservice
 from source.hardware import Hardware
 from source.orchestrator import Orchestrator
-
+from source.util import Util
 from queue import Queue
 
 
@@ -9,23 +10,33 @@ class Environment:
     TIME = 0
 
     def __init__(self):
-        #unused
+        # unused
         self.queries = Queue()
         self.orchestrator = Orchestrator(self)
 
     def set_up(self, filename):
         # ハードウェアのセットアップ(from yaml)
-        f = open(filename)
-        data = yaml.load(f)
-        self.number_of_hardware = data["Number_of_hardware"]
+        self.number_of_hardware, services = Util.load_config(filename)
         self.hardware_dict = {}
         # hardware name should be chaged to str
         for i in range(self.number_of_hardware):
             self.hardware_dict[i] = Hardware(i)
         self.service_dict = {}
-        for i, d in enumerate(data["Service"]):
+        for i, d in enumerate(services):
             s = Service(self, d)
             self.service_dict[i] = s
+            # deploy
+            for m_name in s.microservices.keys():
+                for rep_dict in s.hardware_map[m_name]:
+                    for rep_num, harsware_num in rep_dict.items():
+                        name = m_name + "_" + str(rep_num)
+                        microservice = Microservice(
+                            self.harsware_dict[hardware_num],
+                            name,
+                            s.jobs_of_service[m_name],
+                            s.jobs)
+                        self.hardware_dict[hardware_num].deploy(
+                            microservice, name)
 
     def update(self):
         Environment.TIME += Environment.DELTATIME

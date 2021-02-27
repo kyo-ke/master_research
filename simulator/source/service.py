@@ -1,10 +1,11 @@
+from source.util import Util
 from source.job import Job
 from collections import deque
 
 
 class Service:
-    def __init__(self):
-        pass
+    def __init__(self, data):
+        self.service_id, self.microservices,self.hardware_map, self.jobs_of_service,self.queries,self.jobs = Util.parse_service(data)
 
 
 class Microservice:
@@ -15,6 +16,7 @@ class Microservice:
         self.run_job_dict = dict()
         self.wait_job_deque = deque()#deque for wating jobs
         self.job_deque = deque()#deque for running job
+        #where did i use this
         self.hardware = hardware
         self.microservice_id = microservice_id#str name of microservice
         self.next_id = 0
