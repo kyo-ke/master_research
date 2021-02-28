@@ -39,5 +39,23 @@ class TestMicroservice(unittest.TestCase):
         self.assertEqual(microservice.generate_id(),1)
         self.assertEqual(microservice.generate_id(),2)
 
+    def test_get_id(self):
+        microservice = Microservice(self.hardware, self.microservice_id, self.job_list, self.job_dict)
+        self.assertEqual(microservice.get_id(), self.microservice_id)
+
+    def test_get_hardware(self):
+        microservice = Microservice(self.hardware, self.microservice_id, self.job_list, self.job_dict)
+        self.assertEqual(microservice.get_hardware(), self.hardware)
+
+    def test_get_hardware_id(self):
+        microservice = Microservice(self.hardware, self.microservice_id, self.job_list, self.job_dict)
+        self.assertEqual(microservice.get_hardware_id(), self.hardware_id)
+
+    def test_end_jobs(self):
+        pass
+
+    def test_run(self):
+        pass
+
 if __name__ == "__main__":
     unittest.main()
