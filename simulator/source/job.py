@@ -5,7 +5,7 @@ class Message:
     def __init__(self,
                  message_type,
                  to_microservice,
-                 to_hardware = None,
+                 to_hardware=None,
                  to_job_type=None,
                  to_job_id=None,
                  from_hardware=None,
@@ -26,6 +26,7 @@ class Message:
 
     def set_target(self, hardware_name):
         self.to_hardware = hardware_name
+
 
 class Job:
     # microservice: Microservice(real istance)
@@ -52,7 +53,7 @@ class Job:
         else:
             message_list = self.generate_message(1)
             remain_time_ = self.remain_time
-            self.remain_time = 0#may be there is no need to set zero to this parameter
+            self.remain_time = 0
             for message in message_list:
                 self.send_message(message)
             return deltatime - remain_time_
@@ -62,6 +63,10 @@ class Job:
 
     def get_microservice_id(self):
         return self.microservice.get_id()
+
+    def get_remain_time(self):
+        return self.remain_time
+
     # flag = 1 終了のサイン
     #flag = 2
     def generate_message(self, flag: int) -> Message:
@@ -78,11 +83,11 @@ class Job:
             message_list = list()
             for j in self.next_jobs:
                 message = Message(message_type=1,
-                                  to_microservice = j["servicename"],
-                                  to_job_type =j["jobname"],
-                                  from_hardware = self.get_hardware_id(),
-                                  from_microservice = self.get_microservice_id(),
-                                  from_job_id = self.job_id)
+                                  to_microservice=j["servicename"],
+                                  to_job_type=j["jobname"],
+                                  from_hardware=self.get_hardware_id(),
+                                  from_microservice=self.get_microservice_id(),
+                                  from_job_id=self.job_id)
                 message_list.append(message)
             return message_list
 
@@ -95,7 +100,7 @@ class Job:
         orchestrator.recieve_message(message)
 
     def count_up(self):
-        self.count+=1
+        self.count += 1
 
     def isend(self):
         return self.count >= self.number_of_next_jobs
@@ -104,10 +109,7 @@ class Job:
         message = self.generate_message(2)
         self.send_message(message)
 
-
     def wait(self):
         message_list = self.generate_message(1)
         for message in message_list:
             self.send_message(message)
-
-

@@ -52,10 +52,38 @@ class TestMicroservice(unittest.TestCase):
         self.assertEqual(microservice.get_hardware_id(), self.hardware_id)
 
     def test_end_jobs(self):
-        pass
+        microservice = Microservice(self.hardware, self.microservice_id, self.job_list, self.job_dict)
+        parent_info = dict()
+        parent_info["parent_hardware"] = "parent_hardware_name"
+        parent_info["parent_microservice"] = "parent_microservice_name"
+        parent_info["parent_job_id"] = "parent_id"
+        microservice.make_job(list(microservice.job_dict.keys())[0], parent_info)
+        microservice.make_job(list(microservice.job_dict.keys())[0], parent_info)
+        self.assertEqual(microservice.run(20), 0)
+        self.assertEqual(len(microservice.job_deque),0)
+        self.assertEqual(len(microservice.wait_job_deque),2)
+        job = microservice.wait_job_deque.pop()
+        for i in range(job.number_of_next_jobs):
+            job.count_up()
+        microservice.wait_job_deque.append(job)
+        self.assertEqual(len(microservice.wait_job_deque),2)
+        microservice.end_jobs()
+        self.assertEqual(len(microservice.wait_job_deque),1)
+
+
 
     def test_run(self):
-        pass
+        microservice = Microservice(self.hardware, self.microservice_id, self.job_list, self.job_dict)
+        parent_info = dict()
+        parent_info["parent_hardware"] = "parent_hardware_name"
+        parent_info["parent_microservice"] = "parent_microservice_name"
+        parent_info["parent_job_id"] = "parent_id"
+        microservice.make_job(list(microservice.job_dict.keys())[0], parent_info)
+        microservice.make_job(list(microservice.job_dict.keys())[0], parent_info)
+        self.assertEqual(microservice.run(10), 0)
+        self.assertEqual(len(microservice.job_deque),1)
+        self.assertEqual(len(microservice.wait_job_deque),1)
+        self.assertEqual(microservice.run(30), 20)
 
 if __name__ == "__main__":
     unittest.main()

@@ -46,6 +46,7 @@ class Microservice:
     def end_jobs(self):
         num = len(self.wait_job_deque)
         while(num>0):
+            num -= 1
             current_job = self.wait_job_deque.popleft()
             if(current_job.isend()):
                 current_job.end()
@@ -56,14 +57,15 @@ class Microservice:
         remain_time = deltatime
         #bag that remain time is positive while deque is empty
         while(remain_time != 0):
-            if(self.job_deque.empty()):
+            if(len(self.job_deque)==0):
                 break
             else:
                 current_job = self.job_deque.popleft()
                 remain_time = current_job.run(remain_time)
-                if(remain_time < 0):
+                if(current_job.remain_time > 0):
                     self.job_deque.appendleft(current_job)
                 else:
                     current_job.wait()
                     self.wait_job_deque.appendleft(current_job)
+        return remain_time
 
