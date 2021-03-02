@@ -60,6 +60,37 @@ class TestHardware(unittest.TestCase):
         microservice = Microservice(
             hardware, microservice_id, job_list, job_dict)
         hardware.deploy(microservice, microservice_id)
+        message = Message(message_type = 1,
+                to_microservice = microservice.microservice_id,
+                to_job_type = list(microservice.job_dict.keys())[0])
+        hardware.execute_message(message)
+        self.assertEqual(len(hardware.microservice_dict[microservice_id].run_job_dict),1)
+        self.assertEqual(len(hardware.microservice_dict[microservice_id].job_deque),1)
+        hardware.execute_message(message)
+        self.assertEqual(len(hardware.microservice_dict[microservice_id].run_job_dict),2)
+        self.assertEqual(len(hardware.microservice_dict[microservice_id].job_deque),2)
 
+    def test_deal_message(self):
+        hardware = Hardware(self.env, self.hardware_id, self.number_of_core)
+        _, services = Util.load_config("config/test.yml")
+        s = services[0]
+        _, microservices, _, jobs_of_service, _, jobs = Util.parse_service(s)
+        microservice_id = list(microservices.keys())[0]
+        job_list = jobs_of_service[microservice_id]
+        job_dict = jobs
+        microservice = Microservice(
+            hardware, microservice_id, job_list, job_dict)
+        hardware.deploy(microservice, microservice_id)
+        message = Message(message_type = 1,
+                to_microservice = microservice.microservice_id,
+                to_job_type = list(microservice.job_dict.keys())[0])
+        message_num = 3
+        for i in range(message_num):
+            hardware.recieve_message(message)
+        self.assertEqual(hardware.message_recieved.qsize(), message_num)
+        hardware.deal_message()
+        self.assertEqual(hardware.message_recieved.qsize(), 0)
+        self.assertEqual(len(hardware.microservice_dict[microservice_id].run_job_dict),message_num)
+        self.assertEqual(len(hardware.microservice_dict[microservice_id].job_deque),message_num)
 
 

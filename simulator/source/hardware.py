@@ -7,7 +7,7 @@ from queue import Queue
 class Hardware:
     def __init__(self, environment, hardware_id, number_of_core: int):
         self.hardware_id = hardware_id
-        #koredokodetukatteru??
+        # koredokodetukatteru??
         self.environment = environment
         self.microservice_dict = dict()
         self.cpu_pressure = 0
@@ -27,13 +27,8 @@ class Hardware:
     def recieve_message(self, message: Message):
         self.message_recieved.put(message)
 
-    def deal_message(self):
-        capacity = self.message_recieved
-        while(capacity > 0):
-            self.execute_message(self.message_recieved.get())
-            capacity -= 1
-
     def execute_message(self, message: Message):
+        #generate job
         if(message.type == 1):
             m_service = self.microservice_dict[message.to_microservice]
             parent_info = dict()
@@ -47,6 +42,12 @@ class Hardware:
             j.count_up()
         else:
             pass
+
+    def deal_message(self):
+        capacity = self.message_recieved.qsize()
+        while(capacity > 0):
+            self.execute_message(self.message_recieved.get())
+            capacity -= 1
 
     def assign_time(self, envtime):
         # CPUの割り当てはプロセスの要求による

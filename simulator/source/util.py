@@ -7,8 +7,8 @@ class Util:
         pass
 
     def load_config(filename: str):
-        f = open(filename)
-        data = yaml.load(f)
+        with open(filename) as f:
+            data = yaml.load(f, Loader=yaml.SafeLoader)
         return data["Number_of_hardware"], data["Service"]
 
     # parse values in data["Service"]
